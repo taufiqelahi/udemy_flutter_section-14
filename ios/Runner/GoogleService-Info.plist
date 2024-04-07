@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyBkuZateOtw1b4B7zvddAx7P-AmXORXlLA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>452830291155</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.udemyFlutterSection14</string>
+	<key>PROJECT_ID</key>
+	<string>udemy-flutter-a2778</string>
+	<key>STORAGE_BUCKET</key>
+	<string>udemy-flutter-a2778.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:452830291155:ios:d102608f058e2ffe882026</string>
+	<key>DATABASE_URL</key>
+	<string>https://udemy-flutter-a2778-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>
