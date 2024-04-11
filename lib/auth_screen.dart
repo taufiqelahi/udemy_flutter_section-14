@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -10,10 +11,11 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
+  final auth = FirebaseAuth.instance;
   var _isLogin = true;
-  final _emailController=TextEditingController();
-  final _passwordController=TextEditingController();
-  final _formKey=GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -51,8 +53,8 @@ class _AuthScreenState extends State<AuthScreen> {
                             keyboardType: TextInputType.emailAddress,
                             autocorrect: false,
                             textCapitalization: TextCapitalization.none,
-                            validator: (v){
-                              if(v!.trim().isEmpty || !v.contains('@')){
+                            validator: (v) {
+                              if (v!.trim().isEmpty || !v.contains('@')) {
                                 return 'please enter valid email';
                               }
                             },
@@ -60,10 +62,10 @@ class _AuthScreenState extends State<AuthScreen> {
                           TextFormField(
                             controller: _passwordController,
                             decoration:
-                            const InputDecoration(labelText: 'Password'),
+                                const InputDecoration(labelText: 'Password'),
                             obscureText: true,
-                            validator: (v){
-                              if(v!.trim().isEmpty || v.length<=6){
+                            validator: (v) {
+                              if (v!.trim().isEmpty || v.length <= 5) {
                                 return "please enter valid password";
                               }
                             },
@@ -71,10 +73,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           const SizedBox(height: 12),
                           ElevatedButton(
                             onPressed: () {
-                              if(_formKey.currentState!.validate()){
-                                print(_emailController.text);
-                                print(_passwordController.text);
-                              }
+                              submit();
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Theme.of(context)
@@ -104,5 +103,31 @@ class _AuthScreenState extends State<AuthScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> submit() async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        if (_isLogin) {
+        final userCrendantial=  await auth.signInWithEmailAndPassword(
+              email: _emailController.text, password: _passwordController.text);
+          ScaffoldMessenger.of(context).clearSnackBars();
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("welcome you are now member" )));
+          print(userCrendantial);
+
+        } else {
+          await auth.createUserWithEmailAndPassword(
+              email: _emailController.text, password: _passwordController.text);
+          ScaffoldMessenger.of(context).clearSnackBars();
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("welcome back" )));
+        }
+      } on FirebaseAuthException catch (e) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(e.message ?? 'Authentication Failed')));
+      }
+    }
   }
 }
