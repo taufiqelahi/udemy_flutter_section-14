@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:udemy_flutter_section14/chat_screen.dart';
 import 'package:udemy_flutter_section14/components/user_image_picker.dart';
@@ -15,9 +18,18 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   final auth = FirebaseAuth.instance;
   var _isLogin = true;
+  var _isAuthenticated=false;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  File? selectedImage;
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +60,12 @@ class _AuthScreenState extends State<AuthScreen> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                         if(!_isLogin) UserImagePicker(),
+                          if (!_isLogin)
+                            UserImagePicker(
+                              onSelectedImages: (File image) {
+                                selectedImage = image;
+                              },
+                            ),
                           TextFormField(
                             controller: _emailController,
                             decoration: const InputDecoration(
@@ -74,8 +91,11 @@ class _AuthScreenState extends State<AuthScreen> {
                             },
                           ),
                           const SizedBox(height: 12),
+                          if(_isAuthenticated)CircularProgressIndicator(),
+                          if(!_isAuthenticated)
                           ElevatedButton(
                             onPressed: () {
+
                               submit();
                             },
                             style: ElevatedButton.styleFrom(
@@ -85,6 +105,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             ),
                             child: Text(_isLogin ? 'Login' : 'Signup'),
                           ),
+                          if(!_isAuthenticated)
                           TextButton(
                             onPressed: () {
                               setState(() {
@@ -109,29 +130,45 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   Future<void> submit() async {
-    if (_formKey.currentState!.validate()) {
-      try {
-        if (_isLogin) {
-        final userCrendantial=  await auth.signInWithEmailAndPassword(
-              email: _emailController.text, password: _passwordController.text);
-          ScaffoldMessenger.of(context).clearSnackBars();
-          ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("welcome you are now member" )));
-          Navigator.push(context, MaterialPageRoute(builder: (_)=>const ChatScreen()));
-          print(userCrendantial);
+    final valid = _formKey.currentState!.validate();
+    if (!valid || !_isLogin && selectedImage == null) {
 
-        } else {
-          await auth.createUserWithEmailAndPassword(
-              email: _emailController.text, password: _passwordController.text);
-          ScaffoldMessenger.of(context).clearSnackBars();
-          ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("welcome back" )));
-        }
-      } on FirebaseAuthException catch (e) {
-        ScaffoldMessenger.of(context).clearSnackBars();
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(e.message ?? 'Authentication Failed')));
-      }
+      return ;
     }
+
+    _formKey.currentState!.save();
+
+    try {
+      setState(() {
+        _isAuthenticated=true;
+      });
+      if (_isLogin) {
+
+        final userCrendantial = await auth.signInWithEmailAndPassword(
+            email: _emailController.text, password: _passwordController.text);
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text("welcome back")));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (_) => const ChatScreen()));
+      } else {
+        final userCredential = await auth.createUserWithEmailAndPassword(
+            email: _emailController.text, password: _passwordController.text);
+        final storageRef = FirebaseStorage.instance
+            .ref()
+            .child('user_images')
+            .child('${userCredential.user!.uid}.jpg');
+        await storageRef.putFile(selectedImage!);
+       final imageUrl= await storageRef.getDownloadURL();
+
+      }
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.message ?? 'Authentication Failed')));
+    }
+    setState(() {
+      _isAuthenticated=false;
+    });
   }
 }
