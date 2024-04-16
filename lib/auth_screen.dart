@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:udemy_flutter_section14/chat_screen.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -113,7 +114,8 @@ class _AuthScreenState extends State<AuthScreen> {
               email: _emailController.text, password: _passwordController.text);
           ScaffoldMessenger.of(context).clearSnackBars();
           ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("welcome you are now member" )));
+              const SnackBar(content: Text("welcome you are now member" )));
+          Navigator.push(context, MaterialPageRoute(builder: (_)=>const ChatScreen()));
           print(userCrendantial);
 
         } else {
@@ -121,7 +123,7 @@ class _AuthScreenState extends State<AuthScreen> {
               email: _emailController.text, password: _passwordController.text);
           ScaffoldMessenger.of(context).clearSnackBars();
           ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("welcome back" )));
+              const SnackBar(content: Text("welcome back" )));
         }
       } on FirebaseAuthException catch (e) {
         ScaffoldMessenger.of(context).clearSnackBars();
