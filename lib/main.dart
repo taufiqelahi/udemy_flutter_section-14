@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:udemy_flutter_section14/auth_screen.dart';
 import 'package:udemy_flutter_section14/chat_screen.dart';
+import 'package:udemy_flutter_section14/splash_screen.dart';
 
 import 'firebase_options.dart';
 
@@ -28,15 +29,19 @@ class MyApp extends StatelessWidget {
             seedColor: const Color.fromARGB(255, 63, 17, 177)),
       ),
       home: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (ctx, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const SplashScreen();
+            }
 
-          if(snapshot.hasData){
-            return ChatScreen();
-          }
-          return AuthScreen();
-        },
-      ),
+            if (snapshot.hasData) {
+
+              return const ChatScreen();
+            }
+
+            return const AuthScreen();
+          }),
     );
   }
 }

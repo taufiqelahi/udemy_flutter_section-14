@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   final auth = FirebaseAuth.instance;
   var _isLogin = true;
-  var _isAuthenticated=false;
+  var _isAuthenticated = false;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -91,31 +92,30 @@ class _AuthScreenState extends State<AuthScreen> {
                             },
                           ),
                           const SizedBox(height: 12),
-                          if(_isAuthenticated)CircularProgressIndicator(),
-                          if(!_isAuthenticated)
-                          ElevatedButton(
-                            onPressed: () {
-
-                              submit();
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Theme.of(context)
-                                  .colorScheme
-                                  .primaryContainer,
+                          if (_isAuthenticated) CircularProgressIndicator(),
+                          if (!_isAuthenticated)
+                            ElevatedButton(
+                              onPressed: () {
+                                submit();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Theme.of(context)
+                                    .colorScheme
+                                    .primaryContainer,
+                              ),
+                              child: Text(_isLogin ? 'Login' : 'Signup'),
                             ),
-                            child: Text(_isLogin ? 'Login' : 'Signup'),
-                          ),
-                          if(!_isAuthenticated)
-                          TextButton(
-                            onPressed: () {
-                              setState(() {
-                                _isLogin = !_isLogin;
-                              });
-                            },
-                            child: Text(_isLogin
-                                ? 'Create an account'
-                                : 'I already have an account'),
-                          ),
+                          if (!_isAuthenticated)
+                            TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  _isLogin = !_isLogin;
+                                });
+                              },
+                              child: Text(_isLogin
+                                  ? 'Create an account'
+                                  : 'I already have an account'),
+                            ),
                         ],
                       ),
                     ),
@@ -132,18 +132,17 @@ class _AuthScreenState extends State<AuthScreen> {
   Future<void> submit() async {
     final valid = _formKey.currentState!.validate();
     if (!valid || !_isLogin && selectedImage == null) {
-
-      return ;
+      print('f');
+      return;
     }
 
     _formKey.currentState!.save();
 
     try {
       setState(() {
-        _isAuthenticated=true;
+        _isAuthenticated = true;
       });
       if (_isLogin) {
-
         final userCrendantial = await auth.signInWithEmailAndPassword(
             email: _emailController.text, password: _passwordController.text);
         ScaffoldMessenger.of(context).clearSnackBars();
@@ -159,8 +158,15 @@ class _AuthScreenState extends State<AuthScreen> {
             .child('user_images')
             .child('${userCredential.user!.uid}.jpg');
         await storageRef.putFile(selectedImage!);
-       final imageUrl= await storageRef.getDownloadURL();
-
+        final imageUrl = await storageRef.getDownloadURL();
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userCredential.user!.uid)
+            .set({
+          'userName': 'TestName',
+          'email': _emailController.text,
+          'imageUrl': imageUrl,
+        });
       }
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).clearSnackBars();
@@ -168,7 +174,7 @@ class _AuthScreenState extends State<AuthScreen> {
           SnackBar(content: Text(e.message ?? 'Authentication Failed')));
     }
     setState(() {
-      _isAuthenticated=false;
+      _isAuthenticated = false;
     });
   }
 }
