@@ -21,12 +21,15 @@ class _AuthScreenState extends State<AuthScreen> {
   var _isLogin = true;
   var _isAuthenticated = false;
   final _emailController = TextEditingController();
+  final _nameController = TextEditingController();
+
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   File? selectedImage;
   @override
   void dispose() {
     _emailController.dispose();
+    _nameController.dispose();
     _passwordController.dispose();
     // TODO: implement dispose
     super.dispose();
@@ -77,6 +80,19 @@ class _AuthScreenState extends State<AuthScreen> {
                             validator: (v) {
                               if (v!.trim().isEmpty || !v.contains('@')) {
                                 return 'please enter valid email';
+                              }
+                            },
+                          ),
+                          if(!_isLogin)
+                          TextFormField(
+                            controller: _nameController,
+                            decoration: InputDecoration(
+
+                              labelText: 'Username'
+                            ),
+                            validator: (v){
+                              if(v==null || v.trim().isEmpty||v.length<4){
+                                return "Please enter 4 charcter";
                               }
                             },
                           ),
@@ -132,10 +148,8 @@ class _AuthScreenState extends State<AuthScreen> {
   Future<void> submit() async {
     final valid = _formKey.currentState!.validate();
     if (!valid || !_isLogin && selectedImage == null) {
-      print('f');
       return;
     }
-
     _formKey.currentState!.save();
 
     try {
@@ -145,11 +159,9 @@ class _AuthScreenState extends State<AuthScreen> {
       if (_isLogin) {
         final userCrendantial = await auth.signInWithEmailAndPassword(
             email: _emailController.text, password: _passwordController.text);
-        ScaffoldMessenger.of(context).clearSnackBars();
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text("welcome back")));
-        Navigator.push(
-            context, MaterialPageRoute(builder: (_) => const ChatScreen()));
+        // ScaffoldMessenger.of(context).clearSnackBars();
+        // ScaffoldMessenger.of(context)
+        //     .showSnackBar(const SnackBar(content: Text("welcome back")));
       } else {
         final userCredential = await auth.createUserWithEmailAndPassword(
             email: _emailController.text, password: _passwordController.text);
@@ -163,7 +175,7 @@ class _AuthScreenState extends State<AuthScreen> {
             .collection('users')
             .doc(userCredential.user!.uid)
             .set({
-          'userName': 'TestName',
+          'userName': _nameController.text,
           'email': _emailController.text,
           'imageUrl': imageUrl,
         });
@@ -172,9 +184,10 @@ class _AuthScreenState extends State<AuthScreen> {
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(e.message ?? 'Authentication Failed')));
+
+      setState(() {
+        _isAuthenticated = false;
+      });
     }
-    setState(() {
-      _isAuthenticated = false;
-    });
   }
 }

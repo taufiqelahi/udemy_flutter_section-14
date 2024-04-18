@@ -1,23 +1,22 @@
+import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
-
 import 'package:udemy_flutter_section14/auth_screen.dart';
 import 'package:udemy_flutter_section14/chat_screen.dart';
+import 'package:udemy_flutter_section14/firebase_options.dart';
 import 'package:udemy_flutter_section14/splash_screen.dart';
 
-import 'firebase_options.dart';
 
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(const App());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class App extends StatelessWidget {
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +37,7 @@ class MyApp extends StatelessWidget {
             if (snapshot.hasData) {
               return const ChatScreen();
             }
+
             return const AuthScreen();
           }),
     );
