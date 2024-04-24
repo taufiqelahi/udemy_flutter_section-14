@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -44,11 +46,25 @@ class _NewMessagesState extends State<NewMessages> {
     );
   }
 
-  void onSubmit() {
-    if (_messageController.text.trim().isEmpty) {
+  Future<void> onSubmit() async {
+    final message=_messageController.text;
+    if (message.trim().isEmpty) {
       return;
     }
-    //firebase
+    FocusScope.of(context).unfocus();
     _messageController.clear();
+
+    final user=FirebaseAuth.instance.currentUser!;
+    final userData=await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+
+
+    FirebaseFirestore.instance.collection('chat').add({
+      'text':message,
+      'createdAt':Timestamp.now(),
+      'userId':user.uid,
+      'userName':userData.data()!['userName'],
+      'imageUrl':userData.data()!['imageUrl']
+      
+    });
   }
 }
