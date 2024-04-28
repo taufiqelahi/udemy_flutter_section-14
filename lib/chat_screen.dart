@@ -18,8 +18,7 @@ class ChatScreen extends StatelessWidget {
             IconButton(
                 onPressed: () async {
                   await FirebaseAuth.instance.signOut();
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => const AuthScreen()));
+
                 },
                 icon: const Icon(Icons.logout))
           ],
