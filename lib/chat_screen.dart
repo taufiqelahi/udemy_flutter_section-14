@@ -5,9 +5,19 @@ import 'package:udemy_flutter_section14/auth_screen.dart';
 import 'package:udemy_flutter_section14/components/chat_messages.dart';
 import 'package:udemy_flutter_section14/components/new_messages.dart';
 
-class ChatScreen extends StatelessWidget {
+class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
 
+  @override
+  State<ChatScreen> createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
