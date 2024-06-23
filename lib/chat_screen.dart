@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:udemy_flutter_section14/auth_screen.dart';
 import 'package:udemy_flutter_section14/components/chat_messages.dart';
 import 'package:udemy_flutter_section14/components/new_messages.dart';
+import 'package:udemy_flutter_section14/services/notfication_service.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -14,17 +15,14 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  void setupNotification()async{
-    final fcm=FirebaseMessaging.instance;
-    await fcm.requestPermission();
-    final token= await fcm.getToken();
-    print(token);
-    fcm.subscribeToTopic('chat');
-  }
+NotificationService service=NotificationService();
   @override
   void initState() {
     // TODO: implement initState
-setupNotification();
+service.requestPermission();
+service.getDeviceToken();
+service.isTokenRefresh();
+service.firbaseInit(context);
   }
   @override
   Widget build(BuildContext context) {
