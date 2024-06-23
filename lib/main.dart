@@ -1,3 +1,5 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -5,10 +7,17 @@ import 'package:udemy_flutter_section14/auth_screen.dart';
 import 'package:udemy_flutter_section14/chat_screen.dart';
 import 'package:udemy_flutter_section14/firebase_options.dart';
 import 'package:udemy_flutter_section14/splash_screen.dart';
-
+@pragma('vm:entry-point')
+Future<void> firbaseMessageBackgroundHandeler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  if (kDebugMode) {
+    print('Handler a background message${message.messageId}');
+  }
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  FirebaseMessaging.onBackgroundMessage(firbaseMessageBackgroundHandeler);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

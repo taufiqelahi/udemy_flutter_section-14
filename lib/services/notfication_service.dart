@@ -66,6 +66,7 @@ class NotificationService {
         inItLocalNotification(context, message);
         showNotification(context, message);
       } else {
+        inItLocalNotification(context, message);
         showNotification(context, message);
       }
     });
