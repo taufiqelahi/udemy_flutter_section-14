@@ -134,17 +134,7 @@ await FirebaseMessaging.onMessageOpenedApp.listen((event){
   Future<String> getAccessToken() async {
     // Your client ID and client secret obtained from Google Cloud Console
     final serviceAccountJson = {
-      "type": "service_account",
-      "project_id": "udemy-flutter-a2778",
-      "private_key_id": "cb3aed0b9d87d7aa443ac690344d22329e8df4ac",
-      "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDR1ijJjgrx3Gdz\n5XR612D6HZ0BOQxdQW6VPQB7ushdyxrv0evvYg+qCk2NAT+DIZvPUbfwiuLJqXQO\nz2YddeecfDk6qFSB2kdfkFMwo6jgYgj5QfD6BMC3UfafS5KHN6IUD6pNn7nOL997\nm+A0NVbNo5dS+/DfVpNw/la/yT22tPjXb/ebp+VL6ODV3Jh2HrjJFkp64tWdI1nO\nuFDE2bmyoTgMXTXCVR0cZ8d9w6r+XujKa6h0vDvFsMXF5W4xGE9vDl9wbG1iObrn\nfIk5MN5Vs3O4+AUBlBuYJ/2MrLG3dMjSXCGZFisg9RmNB8eL0ZWch56f2Wt+q3tE\noN00i1v9AgMBAAECggEAMwYgZOJlRuqRPV1ONZCpxCfvRZzZpNOEUEXFGFES57u7\nkRU6ibsOlAptURw8lWZWvNLiJ1ueSesqjW9hJUjGSQbr45eK9Qhe0p4FnI4vQmCU\nTgf60NDXC7yie5mkx7x/bOFiR/3O8JQzg5sjqY5OzTI6WbNpnuUudQtjjL8igoqO\nF/Lu2HYCFB0nN/oJK0VAMI3G98otl9VSfAmyKYT4+IJu4wqLfnUeFn3d4AQA3gjR\nlq28uVFB0ZlCXsET6uoDpN22BEGSyFiwX+vmQpWuIMKwqe0HCCvYebwj3YXx93aj\nyfldRvuwjq9JYzk3AogpIH8iNW6pu1hhyssxK4/gAQKBgQD0WTFfn5kFPsQn19kP\naABSdpZxhisqdCoFlu80I0g6HILW3odiz4v0B8ED508YHfZ4u3GqxcEB1t2NzVkN\nbc5pxGPN1juqmHNBX2vKhptTh5jpiKmgs56dIzrSw6zQfkxowlY8CA51ZWp/3JMo\nBR+AtLKxD7pTc5+Y5/68jZn5XQKBgQDb16x+GUgF7cxhQ2Qo12WrXpzFVRWnh4Nx\nwRmXLo/qjPCCgTfGd2cH/pyrdgomYMQz7AgSpYD1hH6XtrGaqJdJJ49n7qF7sGb6\nKg2Pr5ClsIhElqP3f4Tnv6XAejD697v8U2j+PFLl4yBRbI7uwlboCys+97CV036Q\nk23CNtyjIQKBgC3y59n3hSr7Vp+3c1X2VLktG7VVaaCeH5jVfT3stJRY8DG/vu3R\n4ZuOKbm2MaVzXPnvJbzbWyQhZ6BW0Tw5PeudxrbaZnX6HRJaA0cecO8QPK0Nyfgy\nTs115oXjzgeW+H9qrBS13yIsZA6PSAzqibYGROQO9RbkU0rJtZl3d1DxAoGBAL65\nwOtxUXvbT5n+VnHcVVc0cPv+EhhSx+Wzqljvy2motqvyIQps4pUb/p3+fVXIU8/b\n8TEEJvpZ5V4H4NOVehK8YHzBmZVueBiGzVcf8HTez4n5yuzY09we91UibUX+ETga\nwRb4DM9mmc4qSWK4dZ9AuVcamjeR0dbqIKoC4K4hAoGAZLEO82RG2i79FbPzE312\noUwOglLfmWfZr++7UN2VRe0unaTwzQ6qHzjy5Nklcu5epAVj6QJrz+c2dYsPhv5v\nkhQ8tzeqvrE6alrSITKEe77v1dJlb5UVt9e6pzQYQ4F1BZAdf9ik7KDUHV85Jx7y\naCgJVoXwP1xmOGx4Sss0nYU=\n-----END PRIVATE KEY-----\n",
-      "client_email": "firebase-adminsdk-cgirt@udemy-flutter-a2778.iam.gserviceaccount.com",
-      "client_id": "115525569496216657628",
-      "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-      "token_uri": "https://oauth2.googleapis.com/token",
-      "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-      "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-cgirt%40udemy-flutter-a2778.iam.gserviceaccount.com",
-      "universe_domain": "googleapis.com"
+
     };
 
     List<String> scopes = [
