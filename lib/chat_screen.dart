@@ -23,6 +23,7 @@ service.requestPermission();
 service.getDeviceToken();
 service.isTokenRefresh();
 service.firbaseInit(context);
+service.setupInteraction(context);
   }
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,29 @@ service.firbaseInit(context);
                   await FirebaseAuth.instance.signOut();
 
                 },
-                icon: const Icon(Icons.logout))
+                icon: const Icon(Icons.logout)) ,
+            IconButton(
+                onPressed: () async {
+                  final  currentFCMToken = await FirebaseMessaging.instance.getToken();
+
+                  Map<String,dynamic>data={
+                    'message': {
+                      'token': currentFCMToken, // Token of the device you want to send the message to
+                      'notification': {
+                        'body': 'This is an FCM notification message!',
+                        'title': 'FCM Message'
+                      },
+                      'data': {
+                  'id':'12345',
+                        'type':'message', // Include the current user's FCM token in data payload
+
+                      },
+                    }
+
+                  };
+await service.sendNotification(data);
+                },
+                icon: const Icon(Icons.send))
           ],
         ),
         body: const Column(

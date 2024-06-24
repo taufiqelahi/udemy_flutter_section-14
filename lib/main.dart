@@ -7,6 +7,7 @@ import 'package:udemy_flutter_section14/auth_screen.dart';
 import 'package:udemy_flutter_section14/chat_screen.dart';
 import 'package:udemy_flutter_section14/firebase_options.dart';
 import 'package:udemy_flutter_section14/splash_screen.dart';
+
 @pragma('vm:entry-point')
 Future<void> firbaseMessageBackgroundHandeler(RemoteMessage message) async {
   await Firebase.initializeApp();
