@@ -32,7 +32,11 @@ migrate_working_dir/
 .pub/
 /build/
 lib/firebase_options.dart
+<<<<<<< HEAD
 
+=======
+.env/
+>>>>>>> 68e5f44 (edit git ignore)
 # Symbolication related
 app.*.symbols
 
