@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:udemy_flutter_section14/auth_screen.dart';
 import 'package:udemy_flutter_section14/components/chat_messages.dart';
 import 'package:udemy_flutter_section14/components/new_messages.dart';
+import 'package:udemy_flutter_section14/payment_screen.dart';
 import 'package:udemy_flutter_section14/services/notfication_service.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -30,7 +31,9 @@ service.setupInteraction(context);
     return Scaffold(
 
         appBar: AppBar(
-          title: const Text('chat Screen'),
+          title: InkWell(onTap:(){
+            Navigator.push(context, MaterialPageRoute(builder: (_)=>PaymentScreen()));
+          },child: const Text('chat Screen')),
           actions: [
             IconButton(
                 onPressed: () async {
