@@ -45,6 +45,7 @@ dependencies:
   googleapis_auth:
   googleapis:
   http:
+  flutter_stripe: ^10.2.0
 
 
 

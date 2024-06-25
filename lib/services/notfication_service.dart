@@ -131,57 +131,57 @@ await FirebaseMessaging.onMessageOpenedApp.listen((event){
   handleMessage(context, event);
 });
   }
-  Future<String> getAccessToken() async {
-    // Your client ID and client secret obtained from Google Cloud Console
-    final serviceAccountJson = {
+    Future<String> getAccessToken() async {
+      // Your client ID and client secret obtained from Google Cloud Console
+      final serviceAccountJson = {
+  ///paste your client secret
+      };
 
-    };
+      List<String> scopes = [
+        "https://www.googleapis.com/auth/userinfo.email",
+        "https://www.googleapis.com/auth/firebase.database",
+        "https://www.googleapis.com/auth/firebase.messaging"
+      ];
 
-    List<String> scopes = [
-      "https://www.googleapis.com/auth/userinfo.email",
-      "https://www.googleapis.com/auth/firebase.database",
-      "https://www.googleapis.com/auth/firebase.messaging"
-    ];
-
-    http.Client client = await auth.clientViaServiceAccount(
-      auth.ServiceAccountCredentials.fromJson(serviceAccountJson),
-      scopes,
-    );
-
-    // Obtain the access token
-    auth.AccessCredentials credentials = await auth.obtainAccessCredentialsViaServiceAccount(
+      http.Client client = await auth.clientViaServiceAccount(
         auth.ServiceAccountCredentials.fromJson(serviceAccountJson),
         scopes,
-        client
+      );
+
+      // Obtain the access token
+      auth.AccessCredentials credentials = await auth.obtainAccessCredentialsViaServiceAccount(
+          auth.ServiceAccountCredentials.fromJson(serviceAccountJson),
+          scopes,
+          client
+      );
+
+      // Close the HTTP client
+      client.close();
+
+      // Return the access token
+      return credentials.accessToken.data;
+
+    }
+  Future<void>sendNotification(data)async{
+    final String serverKey = await getAccessToken() ; // Your FCM server key
+    final String fcmEndpoint = 'https://fcm.googleapis.com/v1/projects/udemy-flutter-a2778/messages:send';
+  try{
+   final response=await http.post(Uri.parse(fcmEndpoint),
+        body: json.encode(data),
+        headers: {
+
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $serverKey',
+        }
     );
 
-    // Close the HTTP client
-    client.close();
-
-    // Return the access token
-    return credentials.accessToken.data;
-
+   if(response.statusCode==200){
+  print("successfully");
+   }else{
+     print(response.statusCode);
+   }
+  }catch(e){
+    print(e);
   }
-Future<void>sendNotification(data)async{
-  final String serverKey = await getAccessToken() ; // Your FCM server key
-  final String fcmEndpoint = 'https://fcm.googleapis.com/v1/projects/udemy-flutter-a2778/messages:send';
-try{
- final response=await http.post(Uri.parse(fcmEndpoint),
-      body: json.encode(data),
-      headers: {
-
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $serverKey',
-      }
-  );
-
- if(response.statusCode==200){
-print("successfully");
- }else{
-   print(response.statusCode);
- }
-}catch(e){
-  print(e);
-}
-}
+  }
 }
