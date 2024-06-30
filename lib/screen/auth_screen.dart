@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:udemy_flutter_section14/screen/chat_screen.dart';
+import 'package:udemy_flutter_section14/screen/all_chat_screen.dart';
 import 'package:udemy_flutter_section14/components/user_image_picker.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -178,6 +178,7 @@ class _AuthScreenState extends State<AuthScreen> {
           'userName': _nameController.text,
           'email': _emailController.text,
           'imageUrl': imageUrl,
+          'id':userCredential.user!.uid
         });
       }
     } on FirebaseAuthException catch (e) {

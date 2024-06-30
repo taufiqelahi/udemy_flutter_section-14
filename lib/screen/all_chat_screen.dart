@@ -8,14 +8,14 @@ import 'package:udemy_flutter_section14/components/new_messages.dart';
 import 'package:udemy_flutter_section14/screen/payment_screen.dart';
 import 'package:udemy_flutter_section14/services/notfication_service.dart';
 
-class ChatScreen extends StatefulWidget {
-  const ChatScreen({super.key});
+class AllChatScreen extends StatefulWidget {
+  const AllChatScreen({super.key});
 
   @override
-  State<ChatScreen> createState() => _ChatScreenState();
+  State<AllChatScreen> createState() => _AllChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class _AllChatScreenState extends State<AllChatScreen> {
 NotificationService service=NotificationService();
   @override
   void initState() {
