@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:udemy_flutter_section14/model/user.dart';
 import 'package:udemy_flutter_section14/screen/message_screen.dart';
@@ -11,6 +12,7 @@ class UserListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentUser=FirebaseAuth.instance.currentUser;
     return Scaffold(
       appBar: AppBar(
         title: Text('Users List'),
@@ -28,19 +30,23 @@ class UserListScreen extends StatelessWidget {
               itemCount: users.length,
               itemBuilder: (context, index) {
                 final user = users[index];
-                return ListTile(
-                  onTap: () {
-                   Navigator.push(context, MaterialPageRoute(builder: (_)=> UserChatScreen(
-                     userId: user.id,
-                     userName: user.userName,
-                   )));
-                  },
-                  leading: CircleAvatar(
-                    backgroundImage: NetworkImage(user.imageUrl),
-                  ),
-                  title: Text(user.userName),
-                  subtitle: Text(user.email),
-                );
+                if(currentUser?.uid!=user.id){
+                  return ListTile(
+
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (_)=> UserChatScreen(
+                        userId: user.id,
+                        userName: user.userName,
+                      )));
+                    },
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(user.imageUrl),
+                    ),
+                    title: Text(user.userName),
+                    subtitle: Text(user.email),
+                  );
+                }
+
               },
             );
           }
