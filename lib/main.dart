@@ -5,10 +5,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:udemy_flutter_section14/auth_screen.dart';
-import 'package:udemy_flutter_section14/chat_screen.dart';
+import 'package:udemy_flutter_section14/screen/auth_screen.dart';
+import 'package:udemy_flutter_section14/screen/chat_screen.dart';
 import 'package:udemy_flutter_section14/firebase_options.dart';
-import 'package:udemy_flutter_section14/splash_screen.dart';
+import 'package:udemy_flutter_section14/screen/splash_screen.dart';
 
 @pragma('vm:entry-point')
 Future<void> firbaseMessageBackgroundHandeler(RemoteMessage message) async {

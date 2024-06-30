@@ -2,10 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:udemy_flutter_section14/auth_screen.dart';
+import 'package:udemy_flutter_section14/screen/auth_screen.dart';
 import 'package:udemy_flutter_section14/components/chat_messages.dart';
 import 'package:udemy_flutter_section14/components/new_messages.dart';
-import 'package:udemy_flutter_section14/payment_screen.dart';
+import 'package:udemy_flutter_section14/screen/payment_screen.dart';
 import 'package:udemy_flutter_section14/services/notfication_service.dart';
 
 class ChatScreen extends StatefulWidget {
