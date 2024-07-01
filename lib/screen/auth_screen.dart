@@ -6,6 +6,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:udemy_flutter_section14/screen/all_chat_screen.dart';
 import 'package:udemy_flutter_section14/components/user_image_picker.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
+import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -146,6 +148,7 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   Future<void> submit() async {
+
     final valid = _formKey.currentState!.validate();
     if (!valid || !_isLogin && selectedImage == null) {
       return;
@@ -159,6 +162,51 @@ class _AuthScreenState extends State<AuthScreen> {
       if (_isLogin) {
         final userCrendantial = await auth.signInWithEmailAndPassword(
             email: _emailController.text, password: _passwordController.text);
+        ZegoUIKitPrebuiltCallInvitationService().init(
+          appID: 1645737866 /*input your AppID*/,
+          appSign: '8ad90ea594b0dcbf17a80f842142001274f087cfd2dba8492746745ff1c5a348' /*input your AppSign*/,
+          userID: userCrendantial.user!.uid,
+          userName: '',
+          plugins: [ZegoUIKitSignalingPlugin()],
+          notificationConfig: ZegoCallInvitationNotificationConfig(
+            androidNotificationConfig: ZegoCallAndroidNotificationConfig(
+              showFullScreen: true,
+              channelID: "ZegoUIKit",
+              channelName: "Call Notifications",
+              sound: "notification",
+              icon: "notification_icon",
+            ),
+            iOSNotificationConfig: ZegoCallIOSNotificationConfig(
+              systemCallingIconName: 'CallKitIcon',
+            ),
+          ),
+          requireConfig: (ZegoCallInvitationData data) {
+            final config = (data.invitees.length > 1)
+                ? ZegoCallType.videoCall == data.type
+                ? ZegoUIKitPrebuiltCallConfig.groupVideoCall()
+                : ZegoUIKitPrebuiltCallConfig.groupVoiceCall()
+                : ZegoCallType.videoCall == data.type
+                ? ZegoUIKitPrebuiltCallConfig.oneOnOneVideoCall()
+                : ZegoUIKitPrebuiltCallConfig.oneOnOneVoiceCall();
+            // config.avatarBuilder = customAvatarBuilder;
+            /// support minimizing, show minimizing button
+            config.topMenuBar.isVisible = true;
+            config.bottomMenuBar.buttons
+                .insert(0, ZegoCallMenuBarButtonName.minimizingButton);
+            // config.bottomMenuBar.buttons
+            //     .remove(ZegoCallMenuBarButtonName.hangUpButton);
+            config
+              ..turnOnCameraWhenJoining = true
+              ..turnOnMicrophoneWhenJoining = true
+              ..useSpeakerWhenJoining = true;
+            config.layout = ZegoLayout.pictureInPicture(
+              isSmallViewDraggable: true,
+              switchLargeOrSmallViewByClick: true,
+            );
+            return config;
+          },
+
+        );
         // ScaffoldMessenger.of(context).clearSnackBars();
         // ScaffoldMessenger.of(context)
         //     .showSnackBar(const SnackBar(content: Text("welcome back")));
