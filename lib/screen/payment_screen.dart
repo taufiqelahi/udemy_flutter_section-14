@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
 
 class PaymentScreen extends StatefulWidget {
@@ -20,27 +19,27 @@ class _PaymentScreenState extends State<PaymentScreen> {
       print(data);
 
       // 2. initialize the payment sheet
-      await Stripe.instance.initPaymentSheet(
-        paymentSheetParameters: SetupPaymentSheetParameters(
-          // Set to true for custom flow
-          customFlow: false,
-          // Main params
-          merchantDisplayName: 'Flutter Stripe Store Demo',
-          paymentIntentClientSecret: data['client_secret'],
-          // Customer keys
-          customerEphemeralKeySecret: data['ephemeralKey'],
-          customerId: data['id'],
-          // Extra options
-          // applePay: const PaymentSheetApplePay(
-          //   merchantCountryCode: 'US',
-          // ),
-          // googlePay: const PaymentSheetGooglePay(
-          //   merchantCountryCode: 'US',
-          //   testEnv: true,
-          // ),
-          style: ThemeMode.dark,
-        ),
-      );
+      // await Stripe.instance.initPaymentSheet(
+      //   paymentSheetParameters: SetupPaymentSheetParameters(
+      //     // Set to true for custom flow
+      //     customFlow: false,
+      //     // Main params
+      //     merchantDisplayName: 'Flutter Stripe Store Demo',
+      //     paymentIntentClientSecret: data['client_secret'],
+      //     // Customer keys
+      //     customerEphemeralKeySecret: data['ephemeralKey'],
+      //     customerId: data['id'],
+      //     // Extra options
+      //     // applePay: const PaymentSheetApplePay(
+      //     //   merchantCountryCode: 'US',
+      //     // ),
+      //     // googlePay: const PaymentSheetGooglePay(
+      //     //   merchantCountryCode: 'US',
+      //     //   testEnv: true,
+      //     // ),
+      //     style: ThemeMode.dark,
+      //   ),
+      // );
       setState(() {});
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -62,7 +61,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
               await initPaymentSheet();
               try{
-                await Stripe.instance.presentPaymentSheet();
+              //  await Stripe.instance.presentPaymentSheet();
               }catch(e){
                 print("Error${e}");
               }

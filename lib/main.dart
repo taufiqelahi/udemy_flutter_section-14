@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:udemy_flutter_section14/screen/auth_screen.dart';
 import 'package:udemy_flutter_section14/screen/all_chat_screen.dart';
 import 'package:udemy_flutter_section14/firebase_options.dart';
@@ -22,8 +21,8 @@ Future<void> firbaseMessageBackgroundHandeler(RemoteMessage message) async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
-  Stripe.publishableKey= dotenv.env["STRIPE_PUBLISH_KEY"]!;
-  await Stripe.instance.applySettings();
+  //Stripe.publishableKey= dotenv.env["STRIPE_PUBLISH_KEY"]!;
+  //await Stripe.instance.applySettings();
   FirebaseMessaging.onBackgroundMessage(firbaseMessageBackgroundHandeler);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
