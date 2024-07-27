@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "hrproapp-8ba6d",
+  "private_key_id": "800c678a61c8bbac082f12df0e41a33a7ab1322d",
+  "private_key": "-----BEGIN PRIVATE KEY-----Xy7ZxJYK92\n4c08ZkRmgRNWlqy3FvA==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-knne5@hrproapp-8ba6d.iam.gserviceaccount.com",
+  "client_id": "116935093584995068423",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-knne5%40hrproapp-8ba6d.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
